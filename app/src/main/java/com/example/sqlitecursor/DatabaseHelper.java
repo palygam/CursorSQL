@@ -29,41 +29,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * Constructor should be private to prevent direct instantiation.
      * make call to static method "getInstance()" instead.
      */
+    static final String DATABASE_NAME = "DATABASE_CONTACTS";
+    static final int DATABASE_VERSION = 1;
+
     private DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
-}
-
-
-
-    public static final String TABLE_NAME = "TABLE_CONTACTS";
-    public static final String ID = "ID";
-    public static final String LAST_NAME = "LAST_NAME";
-    public static final String FIRST_NAME = "FIRST_NAME";
-    public static final String MIDDLE_NAME = "MIDDLE_NAME";
-    public static final int AGE = 0;
-    static final String DB_NAME = "DATABASE_CONTACTS";
-    static final int DB_VERSION = 1;
-
-    private static final String CREATE_TABLE = "create table " + TABLE_NAME + "(" + ID
-            + " INTEGER PRIMARY KEY AUTOINCREMENT, " + LAST_NAME + " TEXT NOT NULL, " + FIRST_NAME + " TEXT NOT NULL, " +
-            MIDDLE_NAME + " TEXT NOT NULL, " + AGE + " INTEGER NOT NULL);";
-
-
-    public DatabaseHelper(Context context) {
-        super(context, DB_NAME, null, DB_VERSION);
-    }
-
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_TABLE);
+    public void onCreate(SQLiteDatabase database) {
+        database.execSQL(DatabaseContract.Contact.CREATE_TABLE);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-        onCreate(db);
+    public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
+        database.execSQL("DROP TABLE IF EXISTS " + DatabaseContract.Contact.TABLE_NAME);
+        onCreate(database);
     }
 }
 

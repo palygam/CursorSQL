@@ -13,9 +13,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by androidwarriors on 2/18/2016.
- */
 public class DatabaseAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder> {
 
     Context context;
