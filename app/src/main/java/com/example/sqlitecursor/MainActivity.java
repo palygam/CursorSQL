@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
-import android.widget.SimpleCursorAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,8 +12,6 @@ import com.google.android.material.textfield.TextInputLayout;
 
 
 public class MainActivity extends AppCompatActivity {
-    private DatabaseManager dbManager;
-
     private TextInputEditText textInputLastName;
     private TextInputEditText textInputFirstName;
     private TextInputEditText textInputMiddleName;
@@ -41,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void addButtonMainActivity() {
         final Button buttonSendData = findViewById(R.id.button_send);
-        dbManager = new DatabaseManager(this);
-        dbManager.open();
         buttonSendData.setOnClickListener(view -> {
             lastName = textInputLastName.getText().toString();
             firstName = textInputFirstName.getText().toString().substring(0, 1).toUpperCase();
@@ -56,12 +51,15 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
             age = Integer.parseInt(String.valueOf(textInputAge.getText()));
-            Thread backgroundThread = new Thread(() -> {
-                dbManager.insert(lastName, firstName, middleName, age);
-            });
-            backgroundThread.start();
-
+            insertContacts();
             startActivity(new Intent(MainActivity.this, ShowDatabaseActivity.class));
         });
+    }
+
+    private void insertContacts() {
+        Thread backgroundThread = new Thread(() -> {
+            DatabaseHelper.getInstance(MainActivity.this).addContact(lastName, firstName, middleName, age);
+        });
+        backgroundThread.start();
     }
 }
